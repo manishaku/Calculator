@@ -42,33 +42,38 @@ def parser():
 #Print the area
 #Call graph
 def rectangle():
+    pass
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("triangle")
 #Print the area
 #Call graph 
 def triangle():
+    pass
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("circle")
 #Print the area
 #Call graph   
 def circle():
-    
+    pass
+
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("rhombus")
 #Print the area
 #Call graph  
 def rhombus():
-    
+    pass
+
 #Gets a list of information such as info = ["rectangle", 5, 8]   
 #or info = ["circle", 5]   
-#Uses the information to print a graph of the shape
+#Uses the information to print a graph of the shape 
 def graph(info):
-            
+    pass
+
 #Provides information about python 
 #and code used while developing the calculator 
 #Is called right before the area and graph is printed
 #for each shape so should provide information about the code that follows
 def developerMode(shape):
-
+    pass
