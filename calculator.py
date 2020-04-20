@@ -36,7 +36,8 @@ def parser():
         elif shape == "triangle":
             triangle()
         elif shape == "circle":
-            circle()
+            r = int(input("what is your radius"))
+            circle(r)
         elif shape == "rhombus":
             rhombus()
         else:
@@ -60,8 +61,6 @@ def rectangle(length, height):
     plot.show()
     
 
-    
-
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("triangle")
@@ -74,8 +73,16 @@ def triangle():
 #Checks if mode == True and calls developerMode("circle")
 #Print the area
 #Call graph   
-def circle():
-    pass
+def circle(radius):
+    fig = plot.figure()
+    circle1 = patches.Circle((5, 5), radius, color = 'r')
+    sub = fig.add_subplot(111, aspect= 'equal')
+    sub.add_patch(circle1)
+    plot.ylim(0, 10)
+    plot.xlim(0, 10)
+    sub.add_artist(circle1)
+    plot.show()
+
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("rhombus")
