@@ -13,6 +13,9 @@
 # course notes, that has been clearly noted with a proper
 # citation in the comments of my program.
 
+import matplotlib.pyplot as plot
+import matplotlib.patches as patches
+
 mode = False
 
 # Introduction info about the Calculator
@@ -27,7 +30,9 @@ def parser():
         print("Select a shape: rectangle, triangle, circle, rhombus")
         shape = input('>')
         if shape == "rectangle":
-            rectangle()
+            l = int(input("what is the length"))
+            h = int(input("what is the height"))
+            rectangle(l, h)
         elif shape == "triangle":
             triangle()
         elif shape == "circle":
@@ -41,8 +46,22 @@ def parser():
 #Checks if mode == True and calls developerMode("rectangle")
 #Print the area
 #Call graph
-def rectangle():
-    pass
+def rectangle(length, height):
+    perim = 2 * length + 2 * height
+    area = length*height
+    print(perim)
+    print(area)
+    fig = plot.figure()
+    ax1 = fig.add_subplot(111, aspect='equal')
+    ax1.add_patch(
+        patches.Rectangle((0, 0), length, height))
+    plot.ylim(0, 10)
+    plot.xlim(0, 10)
+    plot.show()
+    
+
+    
+
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("triangle")
@@ -77,3 +96,6 @@ def graph(info):
 #for each shape so should provide information about the code that follows
 def developerMode(shape):
     pass
+
+
+parser()
