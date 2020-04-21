@@ -20,13 +20,17 @@ import os
 import subprocess as sub
 
 
-mode = False
+devMode = False
+newFileCounter = 0
 
 #writes the py outline that the user will be able to edit
 def writePy():
-    os.system('touch pythonTemp.py')
+    global newFileCounter
+    fileName  = "pythonTemp" + str(newFileCounter) + ".py"
+    command = "touch " + fileName
+    os.system(command)
 
-    with open("pythonTemp.py", "w") as newFile:
+    with open(fileName, "w") as newFile:
         newFile.write("import matplotlib.pyplot as plot\n")
         newFile.write("import matplotlib.patches as patches\n")
         newFile.write("def firstFunction():\n")
@@ -39,10 +43,8 @@ def writePy():
         newFile.write("\tsub.add_artist(tri)\n")
         newFile.write("\tplot.show()\n")
         newFile.write("firstFunction()\n")
-
-    os.system("start notepad.exe pythonTemp.py") 
-
-    return True
+    newFileCounter+=1
+    return fileName
     
 
 # Introduction info about the Calculator
@@ -52,10 +54,9 @@ def parser():
     print("Would you like to enable developer mode? (Y/N)")
     answer = input('>')
     if answer == "Y":
-        
-        if (writePy()):
+        developerMode()
+    
 
-            sub.call(['python.exe', 'pythonTemp.py'])
         
 
     while True:
@@ -66,6 +67,8 @@ def parser():
             inp = inp.split()
             rectangle(int(inp[0]), int(inp[1]))
 
+        elif shape == "dev":
+            developerMode()
         elif shape == "triangle":
             # Convert input from '# #' format to a list of ints
             p1 = list(map(int, input("Please enter the first point: ").split()))   
@@ -166,15 +169,41 @@ def rhombus():
 def graph(info):
     pass
 
-
+#Checks if the user is finished editing
+#Continues prompting the question until the Yes answer is returned
+def finishedEdit():
+    while (True):
+        inp = input("are you finished editing? (Y/N)")
+        if (inp == "Y"):
+            break
+        elif (inp != "N"):
+            print("That is not a valid answer")
 
 #Provides information about python 
 #and code used while developing the calculator 
 #Is called right before the area and graph is printed
 #for each shape so should provide information about the code that follows
-#def developerMode():
-    
-      
+def developerMode():
+
+    fileName = writePy()
+
+    sub.call(['python.exe', fileName])
+
+    os.system("start notepad.exe pythonTemp.py") 
+    finishedEdit()
+
+    while(True):
+        try:
+            sub.check_call(['python.exe', fileName])
+            break
+        except sub.CalledProcessError:
+            print("There was an error in your code, please try again.")
+            os.system("start notepad.exe pythonTemp.py")
+            finishedEdit()
+        
+
+
+
         
     
 
