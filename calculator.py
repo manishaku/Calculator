@@ -19,7 +19,6 @@ from scipy import math
 import os
 import subprocess as sub
 
-
 devMode = False
 newFileCounter = 0
 
@@ -46,7 +45,6 @@ def writePy():
     newFileCounter+=1
     return fileName
     
-
 # Introduction info about the Calculator
 # Prompts the user to pick a shape
 def parser():
@@ -55,125 +53,111 @@ def parser():
     answer = input('>')
     if answer == "Y":
         developerMode()
-    
-
-        
-
     while True:
         print("Select a shape: rectangle, triangle, circle, rhombus")
         shape = input('>')
         if shape == "rectangle":
-            inp = input("What is the length and height seperated by space: ")
-            inp = inp.split()
-            rectangle(int(inp[0]), int(inp[1]))
-
+            print("What is the length: ")
+            inp = input('>')
+            print("What is the height: ")
+            inp2 = input('>')
+            rectangle(int(inp), int(inp2))
         elif shape == "dev":
             developerMode()
         elif shape == "triangle":
-            # Convert input from '# #' format to a list of ints
-            p1 = list(map(int, input("Please enter the first point: ").split()))   
-            p2 = list(map(int, input("Please enter the second point: ").split()))
-            p3 = list(map(int, input("Please enter the third point: ").split()))
-            triangle(p1, p2, p3)
-
+            triangle()
         elif shape == "circle":
-            r = int(input("what is your radius"))
+            print("what is your radius")
+            r = int(input('>'))
             circle(r)
         elif shape == "rhombus":
             rhombus()
-
-        elif shape == "quit": #Added a quit feature to get out of the loop
-            break
         else:
             print("Shape not available")
+        print("Do you want to exit the calculator? (Y/N)")
+        v = input('>')
+        if v == 'Y':
+            break
 
 #Asks for the needed measurements
-#Checks if mode == True and calls developerMode("rectangle")
 #Print the area
 #Call graph
 #prints the perimeter and area as well as plots the rectangle with the appropriate length and height
 def rectangle(length, height):
-    perim = 2 * length + 2 * height
     area = length*height
-    print(perim)
-    print(area)
+    print("Area: " + str(area))
     fig = plot.figure()
     ax1 = fig.add_subplot(111, aspect='equal')
-    ax1.add_patch(
-        patches.Rectangle((3, 3), length, height))
-    plot.ylim(0, 10)
-    plot.xlim(0, 10)
+    ax1.add_patch(patches.Rectangle((3, 3), length, height))
+    plot.ylim(0, height + 5)
+    plot.xlim(0, length + 5)
     plot.show()
-    
-
 
 #Asks for the needed measurements
-#Checks if mode == True and calls developerMode("triangle")
-#
-#Prints a triangle but is hardcoded currently, not sure of good parameters
-#as there are so many ways triangles can be formated in geomtry 
-def triangle(p1, p2, p3):
-    fig = plot.figure()
+#Assumed Right Triangle
+def triangle():
+    print("Please enter the base length: ")
+    b = int(input(">")) 
+    print("Please enter the height: ")  
+    h = int(input(">")) 
     
-    area = ((p1[0] * p2[1]) + (p2[0] * p3[1]) + (p3[0] * p1[0]) - (p1[0] * p3[1]) - 
-        (p2[0] * p1[1]) - (p3[0] * p2[1])) / 2
+    fig = plot.figure()
+    area = (1/2)* b * h
     print("Area: " + str(area))
-
+    p1 = (0, h)
+    p2 = (0, 0)
+    p3 = (b, 0)
     tri = patches.Polygon([p1,p2,p3], closed=True,fill=True)
     sub = fig.add_subplot(111, aspect= 'equal')
     sub.add_patch(tri)
-    plot.ylim(0, 10)
-    plot.xlim(0, 10)
+    plot.ylim(0, h + 5)
+    plot.xlim(0, b+ 5)
     sub.add_artist(tri)
     plot.show()
 
 #Asks for the needed measurements
-#Checks if mode == True and calls developerMode("circle")
 #Print the area
 #Call graph
 #plots the circle based on the radius
 def circle(radius):
+    area = 3.14*(int(radius)**2)
+    print("Area: " + str(area))
+    
     fig = plot.figure()
-    circle1 = patches.Circle((5, 5), radius, color = 'r')
+    circle1 = patches.Circle((int(radius), int(radius)), radius, color = 'r')
     sub = fig.add_subplot(111, aspect= 'equal')
     sub.add_patch(circle1)
-    plot.ylim(0, 10)
-    plot.xlim(0, 10)
+    plot.ylim(0, int(radius)*2)
+    plot.xlim(0, int(radius)*2)
     sub.add_artist(circle1)
     plot.show()
 
-
 #Asks for the needed measurements
-#Checks if mode == True and calls developerMode("rhombus")
 #Print the area
 #Call graph  
 def rhombus():
-
     fig = plot.figure()
-    p1 = input("Please enter the first point: ").split()
-    p2 = input("Please enter the second point: ").split()
-    p3 = input("Please enter the third point: ").split()
-    p4 = input("Please enter the fourth point: ").split()
-
-    tri = patches.Polygon([p1,p2,p3,p4], closed=True,fill=False)
+    p = int(input("Please enter the first diagonal length: "))
+    q = int(input("Please enter the second diagonal length: "))
+    area = (p*q) / 2
+    print("Area: " + str(area))
+    p1 = (0, p/2)
+    p2 = (q/2, p)
+    p3 = (q, p/2)
+    p4 = (q/2, 0)
+    tri = patches.Polygon([p1,p2,p3,p4], closed=True,fill=True)
     sub = fig.add_subplot(111, aspect= 'equal')
     sub.add_patch(tri)
-    plot.ylim(0, 10)
-    plot.xlim(0, 10)
+    plot.ylim(0, p + 5)
+    plot.xlim(0, q + 5)
     sub.add_artist(tri)
     plot.show()
-
-#Gets a list of information such as info = ["rectangle", 5, 8]   
-#or info = ["circle", 5]   
-#Uses the information to print a graph of the shape 
-def graph(info):
-    pass
 
 #Checks if the user is finished editing
 #Continues prompting the question until the Yes answer is returned
 def finishedEdit():
     while (True):
-        inp = input("are you finished editing? (Y/N)")
+        inp = input("Are you finished editing? (Y/N)")
         if (inp == "Y"):
             break
         elif (inp != "N"):
@@ -184,14 +168,10 @@ def finishedEdit():
 #Is called right before the area and graph is printed
 #for each shape so should provide information about the code that follows
 def developerMode():
-
     fileName = writePy()
-
     sub.call(['python.exe', fileName])
-
     os.system("start notepad.exe pythonTemp.py") 
     finishedEdit()
-
     while(True):
         try:
             sub.check_call(['python.exe', fileName])
@@ -201,14 +181,5 @@ def developerMode():
             os.system("start notepad.exe pythonTemp.py")
             finishedEdit()
         
-
-
-
-        
-    
-
-
-
-
 
 parser()
