@@ -36,10 +36,11 @@ def parser():
             
             rectangle(int(inp[0]), int(inp[1]))
         elif shape == "triangle":
-            h = int(input("what is the height"))
-            b = int(input("what is the base length"))
-            e = int(input("what is one other edge length"))
-            triangle(h, b,e)
+            # Convert input from '# #' format to a list of ints
+            p1 = list(map(int, input("Please enter the first point: ").split()))   
+            p2 = list(map(int, input("Please enter the second point: ").split()))
+            p3 = list(map(int, input("Please enter the third point: ").split()))
+            triangle(p1, p2, p3)
 
         elif shape == "circle":
             r = int(input("what is your radius"))
@@ -77,10 +78,14 @@ def rectangle(length, height):
 #
 #Prints a triangle but is hardcoded currently, not sure of good parameters
 #as there are so many ways triangles can be formated in geomtry 
-def triangle(height, base, edge):
+def triangle(p1, p2, p3):
     fig = plot.figure()
     
-    tri = patches.Polygon([[0,0],[0, 5],[5, 0]], closed=True,fill=True)
+    area = ((p1[0] * p2[1]) + (p2[0] * p3[1]) + (p3[0] * p1[0]) - (p1[0] * p3[1]) - 
+        (p2[0] * p1[1]) - (p3[0] * p2[1])) / 2
+    print("Area: " + str(area))
+
+    tri = patches.Polygon([p1,p2,p3], closed=True,fill=True)
     sub = fig.add_subplot(111, aspect= 'equal')
     sub.add_patch(tri)
     plot.ylim(0, 10)
@@ -109,7 +114,20 @@ def circle(radius):
 #Print the area
 #Call graph  
 def rhombus():
-    pass
+
+    fig = plot.figure()
+    p1 = input("Please enter the first point: ").split()
+    p2 = input("Please enter the second point: ").split()
+    p3 = input("Please enter the third point: ").split()
+    p4 = input("Please enter the fourth point: ").split()
+
+    tri = patches.Polygon([p1,p2,p3,p4], closed=True,fill=False)
+    sub = fig.add_subplot(111, aspect= 'equal')
+    sub.add_patch(tri)
+    plot.ylim(0, 10)
+    plot.xlim(0, 10)
+    sub.add_artist(tri)
+    plot.show()
 
 #Gets a list of information such as info = ["rectangle", 5, 8]   
 #or info = ["circle", 5]   
