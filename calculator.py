@@ -85,8 +85,10 @@ def parser():
 #Call graph
 #prints the perimeter and area as well as plots the rectangle with the appropriate length and height
 def rectangle(length, height):
+    perim = 2 * length + 2 * height
     area = length*height
-    print("Area: " + str(area))
+    print("Perimeter = 2 * (length + width) = %.3f" %perim)
+    print("Area = length * width = %.3f" %area)
     fig = plot.figure()
     ax1 = fig.add_subplot(111, aspect='equal')
     ax1.add_patch(patches.Rectangle((3, 3), length, height))
@@ -121,8 +123,10 @@ def triangle():
 #Call graph
 #plots the circle based on the radius
 def circle(radius):
-    area = 3.14*(int(radius)**2)
-    print("Area: " + str(area))
+    area = math.pi*(int(radius)**2)
+    perim = 2 * int(radius) * math.pi
+    print("Area = pi * radius * radius = %.3f" %area)
+    print("Circumference = 2 * pi * radius = %.3f" %perim)
     
     fig = plot.figure()
     circle1 = patches.Circle((int(radius), int(radius)), radius, color = 'r')
@@ -154,6 +158,9 @@ def rhombus():
     sub.add_artist(tri)
     plot.show()
 
+#Calculates the distance between two points
+def pointDist(p1, p2):
+    return (p2[0]-p1[0])**2) + (p2[1]-p1[1])**2))**.5
 
 def calcMode():
     pass
