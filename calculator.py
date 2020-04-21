@@ -16,8 +16,34 @@
 import matplotlib.pyplot as plot
 import matplotlib.patches as patches
 from scipy import math
+import os
+import subprocess as sub
+
 
 mode = False
+
+#writes the py outline that the user will be able to edit
+def writePy():
+    os.system('touch pythonTemp.py')
+
+    with open("pythonTemp.py", "w") as newFile:
+        newFile.write("import matplotlib.pyplot as plot\n")
+        newFile.write("import matplotlib.patches as patches\n")
+        newFile.write("def firstFunction():\n")
+        newFile.write("\tfig = plot.figure()\n")
+        newFile.write("\tsub = fig.add_subplot(111, aspect= 'equal')\n")
+        newFile.write("\ttri = patches.Polygon([[0,0], [0,5], [5,0]], closed=True,fill=False)\n")
+        newFile.write("\tsub.add_patch(tri)\n")
+        newFile.write("\tplot.ylim(0, 10)\n")
+        newFile.write("\tplot.xlim(0, 10)\n")
+        newFile.write("\tsub.add_artist(tri)\n")
+        newFile.write("\tplot.show()\n")
+        newFile.write("firstFunction()\n")
+
+    os.system("start notepad.exe pythonTemp.py") 
+
+    return True
+    
 
 # Introduction info about the Calculator
 # Prompts the user to pick a shape
@@ -26,15 +52,20 @@ def parser():
     print("Would you like to enable developer mode? (Y/N)")
     answer = input('>')
     if answer == "Y":
-        mode = True
+        
+        if (writePy()):
+
+            sub.call(['python.exe', 'pythonTemp.py'])
+        
+
     while True:
         print("Select a shape: rectangle, triangle, circle, rhombus")
         shape = input('>')
         if shape == "rectangle":
             inp = input("What is the length and height seperated by space: ")
             inp = inp.split()
-            
             rectangle(int(inp[0]), int(inp[1]))
+
         elif shape == "triangle":
             # Convert input from '# #' format to a list of ints
             p1 = list(map(int, input("Please enter the first point: ").split()))   
@@ -135,12 +166,18 @@ def rhombus():
 def graph(info):
     pass
 
+
+
 #Provides information about python 
 #and code used while developing the calculator 
 #Is called right before the area and graph is printed
 #for each shape so should provide information about the code that follows
-def developerMode(shape):
-    pass
+#def developerMode():
+    
+      
+        
+    
+
 
 
 
