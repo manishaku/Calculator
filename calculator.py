@@ -86,7 +86,7 @@ def parser():
         elif shape == "quit": #Added a quit feature to get out of the loop
             break
         else:
-            print("Shape not available")
+            calcDev(shape)
 
 #Asks for the needed measurements
 #Checks if mode == True and calls developerMode("rectangle")
@@ -165,8 +165,14 @@ def rhombus():
     plot.show()
 
 
-def calcMode():
-    pass
+def calcDev(fileName):
+
+    try:
+        sub.check_call(['python.exe', fileName])
+        
+    except sub.CalledProcessError:
+        print("\nThere was an error in your input, Please try again")
+
 #Gets a list of information such as info = ["rectangle", 5, 8]   
 #or info = ["circle", 5]   
 #Uses the information to print a graph of the shape 
@@ -191,7 +197,9 @@ def finishedEdit():
         
         else:
             print("That is not a valid answer")
-#
+#Asks the user if they are finished editing the script 
+# or would like to continue working in developer mode
+#continues prompting the user until cont or quit is entered
 def finishedDev():
     while (True):
         inp = input("Would you like to continue editing your script or are you finished in Dev mode? (quit/cont) ")
@@ -213,15 +221,17 @@ def developerMode():
     print("This image is what the current code script plots, have fun developing!\n")
     sub.call(['python.exe', fileName])
 
-    
-
     command = "start notepad.exe " + fileName
+    print("Please save file before you are finished editing and the code is run")
+    
     os.system(command) 
+    newFile = input("If you have saved the file under a new name please enter here, otherwise press ENTER: ")
+    if (len(newFile) > 0):
+        fileName = newFile
 
     if (finishedEdit() == 2):
         return False
     
-
     while(True):
         try:
             sub.check_call(['python.exe', fileName])
@@ -233,7 +243,11 @@ def developerMode():
             inp = input("Would you like to try to fix your code? (Y/N) ")
             if (inp != "Y"):
                 break
+        print("Please save file before you are finished editing and the code is run")
         os.system(command)
+        newFile = input("If you have saved the file under a new name please enter here, otherwise press ENTER: ")
+        if (len(newFile) > 0):
+            fileName = newFile
         if (finishedEdit() == 2):
             return False
         
