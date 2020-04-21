@@ -18,6 +18,7 @@ import matplotlib.patches as patches
 from scipy import math
 import os
 import subprocess as sub
+import time
 
 
 devMode = False
@@ -163,6 +164,9 @@ def rhombus():
     sub.add_artist(tri)
     plot.show()
 
+
+def calcMode():
+    pass
 #Gets a list of information such as info = ["rectangle", 5, 8]   
 #or info = ["circle", 5]   
 #Uses the information to print a graph of the shape 
@@ -173,10 +177,30 @@ def graph(info):
 #Continues prompting the question until the Yes answer is returned
 def finishedEdit():
     while (True):
-        inp = input("are you finished editing? (Y/N)")
-        if (inp == "Y"):
-            break
-        elif (inp != "N"):
+        inp = input("are you finished editing? (Y/N) ")
+        if (inp == "Y" ):
+            print("Your code will now run and check for errors. If it is error free your graph will be displayed!")
+            print("If there are any errors in your code, they will be printed below and your plot will not display.\n")
+            return 0
+        elif (inp == "quit"):
+            return 2
+        elif (inp == "N"):
+            print("Okay take your time!")
+            time.sleep(7)
+            return(finishedEdit())
+        
+        else:
+            print("That is not a valid answer")
+#
+def finishedDev():
+    while (True):
+        inp = input("Would you like to continue editing your script or are you finished in Dev mode? (quit/cont) ")
+        if (inp == "quit"):
+            return True
+        elif (inp == "cont"):
+            return False
+        
+        else:
             print("That is not a valid answer")
 
 #Provides information about python 
@@ -186,20 +210,33 @@ def finishedEdit():
 def developerMode():
 
     fileName = writePy()
-
+    print("This image is what the current code script plots, have fun developing!\n")
     sub.call(['python.exe', fileName])
 
-    os.system("start notepad.exe pythonTemp.py") 
-    finishedEdit()
+    
+
+    command = "start notepad.exe " + fileName
+    os.system(command) 
+
+    if (finishedEdit() == 2):
+        return False
+    
 
     while(True):
         try:
             sub.check_call(['python.exe', fileName])
-            break
+            if (finishedDev()):
+                break
+            
         except sub.CalledProcessError:
-            print("There was an error in your code, please try again.")
-            os.system("start notepad.exe pythonTemp.py")
-            finishedEdit()
+            print("\nThere was an error in your code, please try again.")
+            inp = input("Would you like to try to fix your code? (Y/N) ")
+            if (inp != "Y"):
+                break
+        os.system(command)
+        if (finishedEdit() == 2):
+            return False
+        
         
 
 
