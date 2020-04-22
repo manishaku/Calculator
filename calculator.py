@@ -22,11 +22,12 @@ import subprocess as sub
 devMode = False
 newFileCounter = 0
 fileList = []
+
 #writes the py outline that the user will be able to edit
 def writePy():
     global newFileCounter
     fileName  = "pythonTemp" + str(newFileCounter) + ".py"
-    command = "touch" + fileName
+    command = "touch " + fileName
     os.system(command)
     with open(fileName, "w") as newFile:
         newFile.write("#Keep in mind, any line with a \"#\" leading it is a comment which means it does not impact the code.\n\n")
