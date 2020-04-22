@@ -16,7 +16,6 @@
 import matplotlib.pyplot as plot
 import matplotlib.patches as patches
 from scipy import math
-import os
 import subprocess as sub
 import time
 
@@ -27,8 +26,6 @@ newFileCounter = 0
 def writePy():
     global newFileCounter
     fileName  = "pythonTemp" + str(newFileCounter) + ".py"
-    
-
     with open(fileName, "w") as newFile:
         newFile.write("#Keep in mind, any line with a \"#\" leading it is a comment which means it does not impact the code.\n\n")
         newFile.write("#These are import statements which import modules and allow the python code to access more functions\nimport sys\n")
@@ -219,9 +216,10 @@ def developerMode():
     #filename is the name of the written outline which is written in writePy() 
     fileName = writePy()
 
+    commandArr = ['python.exe', fileName, '1']
     #runs the outline code to show the user what the code originially displays
     print("DEV -> This image is what the current code script plots, have fun developing!\n")
-    sub.call(['python.exe', fileName, '5'])
+    sub.call(commandArr)
 
     #Opens the outline code in the notepad and allows the user to edit the code
     print("DEV -> Please close and save file when you are finished editing")
@@ -231,6 +229,13 @@ def developerMode():
     newFile = input("DEV -> If you have saved the file under a new name please enter here, otherwise press ENTER: ")
     if (len(newFile) > 0):
         fileName = newFile
+    
+    paramNum = int(input("DEV -> How many arguments does you function have? "))
+    commandArr = ['python.exe', fileName]
+    if (paramNum  > 0):
+        params = input("DEV -> Please enter your function arguments seperated by spaces: ")
+        params = params.split()
+        commandArr.extend(params)
 
     
     #Loops through the developing process until the user wants to exit developer mode
@@ -239,9 +244,9 @@ def developerMode():
         try:
             print("DEV -> Your code will now run and check for errors. If it is error free your graph will be displayed!")
             print("DEV -> If there are any errors in your code, they will be printed below and your plot will not display")
-            sub.check_call(['python.exe', fileName, '5'])
-            
-
+            sub.check_call(commandArr)
+            if (finishedDev()):
+                break
         except sub.CalledProcessError:
             print("\nDEV -> There was an error in your code, please try again.")
             #prompts user if they would like to fix their code
