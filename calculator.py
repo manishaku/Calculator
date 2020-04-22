@@ -250,7 +250,7 @@ def developerMode():
 
     #Opens the outline code in the notepad and allows the user to edit the code
     print("DEV -> Please close and save file when you are finished editing")
-    sub.call(['notepad', fileName])
+    sub.run(['open', fileName], check = True)
 
     # if user saved file under a new name, prompts user for name and saves it 
     newFile = input("DEV -> If you have saved the file under a new name please enter here, otherwise press ENTER: ")
@@ -290,7 +290,7 @@ def developerMode():
             
         #Opens the outline code in the notepad and allows the user to edit the code
         print("DEV -> Please save file before you are finished editing and the code is run")
-        sub.call(['notepad', fileName])
+        sub.run(['open', fileName], check=True)
 
         #If user saved file under a new name, prompts user for name and saves it 
         newFile = input("DEV -> If you have saved the file under a new name please enter here, otherwise press ENTER: ")
