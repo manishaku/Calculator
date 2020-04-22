@@ -16,16 +16,18 @@
 import matplotlib.pyplot as plot
 import matplotlib.patches as patches
 from scipy import math
+import os
 import subprocess as sub
-import time
 
 devMode = False
 newFileCounter = 0
-
+fileList = []
 #writes the py outline that the user will be able to edit
 def writePy():
     global newFileCounter
     fileName  = "pythonTemp" + str(newFileCounter) + ".py"
+    command = "touch" + fileName
+    os.system(command)
     with open(fileName, "w") as newFile:
         newFile.write("#Keep in mind, any line with a \"#\" leading it is a comment which means it does not impact the code.\n\n")
         newFile.write("#These are import statements which import modules and allow the python code to access more functions\nimport sys\n")
@@ -51,6 +53,7 @@ def writePy():
 # Introduction info about the Calculator
 # Prompts the user to pick a shape
 def parser():
+    global fileList
     print("Welcome to the Geometry Calculator.")
     print("Would you like to enable developer mode? (Y/N)")
     answer = input('>')
@@ -67,6 +70,9 @@ def parser():
             rectangle(int(inp), int(inp2))
         elif shape == "dev":
             developerMode()
+        elif shape == "myFiles":
+            for i in fileList:
+                print(i)
         elif shape == "triangle":
             triangle()
         elif shape == "circle":
@@ -164,11 +170,13 @@ def rhombus():
 def pointDist(p1, p2):
     return ((p2[0]-p1[0])**2) + ((p2[1]-p1[1])**2)**.5
     
-
+#Calls files that were created in developer mode
 def calcDev(fileName):
-
+    fileInfo = fileName.split()
+    command = ['python']
+    command.extend(fileInfo)
     try:
-        sub.check_call(['python.exe', fileName])
+        sub.check_call(command)
         
     except sub.CalledProcessError:
         print("\nThere was an error in your input, Please try again")
@@ -184,7 +192,7 @@ def graph(info):
 def finishedEdit():
     while (True):
         inp = input("DEV -> Are you finished editing? (Y/N): ")
-        if (inp == "Y" ):
+        if (inp == "Y" or inp == 'y'):
             print("DEV -> Your code will now run and check for errors. If it is error free your graph will be displayed!")
             print("DEV -> If there are any errors in your code, they will be printed below and your plot will not display.\n")
             return 0
@@ -208,17 +216,35 @@ def finishedDev():
         else:
             print("DEV -> That is not a valid answer")
 
+#Adds to global list
+def addToList(fileName):
+    global fileList
+    inList = False
+    for i in fileList:
+        if (fileName == i):
+            inList = True
+    if (not inList):
+        fileList.append(fileName)
+#Removes from global list
+def removeFromList(fileName):
+    global fileList
+    try:
+        fileList.remove(fileName)
+    except ValueError:
+        pass
+
 
 #Gives the user to develop their own functions through python scripts
 #Provides the user an outline and walks them through the script and lets them play around
 #with the code to make their own calculator functions
 def developerMode():
+    
     #filename is the name of the written outline which is written in writePy() 
     fileName = writePy()
 
-    commandArr = ['python.exe', fileName, '1']
+    commandArr = ['python', fileName, '1']
     #runs the outline code to show the user what the code originially displays
-    print("DEV -> This image is what the current code script plots, have fun developing!\n")
+    print("DEV -> This image is what the current code script plots, have fun developing!")
     sub.call(commandArr)
 
     #Opens the outline code in the notepad and allows the user to edit the code
@@ -230,8 +256,9 @@ def developerMode():
     if (len(newFile) > 0):
         fileName = newFile
     
+    #gets user to input arguments and adds them to the command list
     paramNum = int(input("DEV -> How many arguments does you function have? "))
-    commandArr = ['python.exe', fileName]
+    commandArr = ['python', fileName]
     if (paramNum  > 0):
         params = input("DEV -> Please enter your function arguments seperated by spaces: ")
         params = params.split()
@@ -245,16 +272,21 @@ def developerMode():
             print("DEV -> Your code will now run and check for errors. If it is error free your graph will be displayed!")
             print("DEV -> If there are any errors in your code, they will be printed below and your plot will not display")
             sub.check_call(commandArr)
+            addToList(fileName)
+
             if (finishedDev()):
                 break
+
         except sub.CalledProcessError:
+            
+            removeFromList(fileName)
             print("\nDEV -> There was an error in your code, please try again.")
             #prompts user if they would like to fix their code
             inp = input("DEV -> Would you like to try to fix your code? (Y/N):  ")
             #If no then prompts user if they would like to stay in dev mode
             if (inp == "N" and finishedDev()):
                 break
-        
+            
         #Opens the outline code in the notepad and allows the user to edit the code
         print("DEV -> Please save file before you are finished editing and the code is run")
         sub.call(['notepad', fileName])
@@ -264,6 +296,5 @@ def developerMode():
         if (len(newFile) > 0):
             fileName = newFile
         
-        
-    
+
 parser()
