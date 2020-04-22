@@ -31,18 +31,19 @@ def writePy():
     os.system(command)
 
     with open(fileName, "w") as newFile:
+        newFile.write("import sys\n")
         newFile.write("import matplotlib.pyplot as plot\n")
         newFile.write("import matplotlib.patches as patches\n")
-        newFile.write("def firstFunction():\n")
+        newFile.write("def firstFunction(arg1):\n")
         newFile.write("\tfig = plot.figure()\n")
         newFile.write("\tsub = fig.add_subplot(111, aspect= 'equal')\n")
-        newFile.write("\ttri = patches.Polygon([[0,0], [0,5], [5,0]], closed=True,fill=False)\n")
+        newFile.write("\ttri = patches.Polygon([[0,0], [0,arg1], [arg1,0]], closed=True,fill=False)\n")
         newFile.write("\tsub.add_patch(tri)\n")
         newFile.write("\tplot.ylim(0, 10)\n")
         newFile.write("\tplot.xlim(0, 10)\n")
         newFile.write("\tsub.add_artist(tri)\n")
         newFile.write("\tplot.show()\n")
-        newFile.write("firstFunction()\n")
+        newFile.write("firstFunction(sys.argv[1])\n")
     newFileCounter+=1
     return fileName
     
@@ -211,7 +212,7 @@ def finishedDev():
 def developerMode():
     fileName = writePy()
     print("This image is what the current code script plots, have fun developing!\n")
-    sub.call(['python.exe', fileName])
+    sub.call(['python.exe', fileName, '5'])
 
     command = "start notepad.exe " + fileName
     print("Please save file before you are finished editing and the code is run")
