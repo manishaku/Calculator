@@ -27,22 +27,26 @@ newFileCounter = 0
 def writePy():
     global newFileCounter
     fileName  = "pythonTemp" + str(newFileCounter) + ".py"
-    command = "touch " + fileName
-    os.system(command)
+    
 
     with open(fileName, "w") as newFile:
-        newFile.write("import sys\n")
-        newFile.write("import matplotlib.pyplot as plot\n")
-        newFile.write("import matplotlib.patches as patches\n")
-        newFile.write("def firstFunction(arg1):\n")
-        newFile.write("\tfig = plot.figure()\n")
-        newFile.write("\tsub = fig.add_subplot(111, aspect= 'equal')\n")
-        newFile.write("\ttri = patches.Polygon([[0,0], [0,arg1], [arg1,0]], closed=True,fill=False)\n")
-        newFile.write("\tsub.add_patch(tri)\n")
-        newFile.write("\tplot.ylim(0, 10)\n")
-        newFile.write("\tplot.xlim(0, 10)\n")
-        newFile.write("\tsub.add_artist(tri)\n")
-        newFile.write("\tplot.show()\n")
+        newFile.write("#Keep in mind, any line with a \"#\" leading it is a comment which means it does not impact the code.\n\n")
+        newFile.write("#These are import statements which import modules and allow the python code to access more functions\nimport sys\n")
+        newFile.write("import matplotlib.pyplot as plot\t#pyplot provides plot for images, run these functions using \"plot\"\n")
+        newFile.write("import matplotlib.patches as patches\t#2D images with color, run these functions with patches\n\n")
+        newFile.write("#\"def\" is a keyword to declare a function in python. \n")
+        newFile.write("#\"firstFunction\" is the name of the function and \"arg1\" is the parameter passed into the function.\n") 
+        newFile.write("def firstFunction(arg1):\n\n\t#Creates a plot to hold created shape\n\tfig = plot.figure()\n")
+        newFile.write("\tsub = fig.add_subplot(111, aspect= 'equal')\n\n")
+        newFile.write("\t#Creates a new shape using Polygon function and stores in variable \"shape\". Try out others at https://matplotlib.org/api/patches_api.html\n")
+        newFile.write("\tshape = patches.Polygon([[0,0], [0,arg1], [arg1,0]], closed=True,fill=True,color ='b', )\n\n")
+        newFile.write("\t#Adds shape to the plot\n\tsub.add_patch(shape)\n\n")
+        newFile.write("\t#The following lines sets the y and x axis limits for the pyplot.These values can be adjusted to change the size of your plot\n")
+        newFile.write("\tplot.ylim(0, 10)\n\tplot.xlim(0, 10)\n\n")
+        newFile.write("\t#This line displays the pyplot, do not remove this line. \n\tplot.show()\n\n")
+        newFile.write("#Below calls the function using the function name \"firstFunction\". Remember if you change the function name change it here too!\n")
+        newFile.write("#The function is called with one argument. If you change the number of parameters the function call changes as well.")
+        newFile.write("\n#\tExample of function call w/ two param: firstfunction(sys.argv[1], sys.argv[2])\n\n")
         newFile.write("firstFunction(sys.argv[1])\n")
     newFileCounter+=1
     return fileName
@@ -182,67 +186,79 @@ def graph(info):
 #Continues prompting the question until the Yes answer is returned
 def finishedEdit():
     while (True):
-        inp = input("are you finished editing? (Y/N) ")
+        inp = input("DEV -> Are you finished editing? (Y/N): ")
         if (inp == "Y" ):
-            print("Your code will now run and check for errors. If it is error free your graph will be displayed!")
-            print("If there are any errors in your code, they will be printed below and your plot will not display.\n")
+            print("DEV -> Your code will now run and check for errors. If it is error free your graph will be displayed!")
+            print("DEV -> If there are any errors in your code, they will be printed below and your plot will not display.\n")
             return 0
         elif (inp == "quit"):
             return 2
         elif (inp == "N"):
-            print("Okay take your time!")
+            print("DEV -> Okay take your time!")
             time.sleep(7)
             return(finishedEdit())        
         else:
-            print("That is not a valid answer")
+            print("DEV -> That is not a valid answer")
+
+#Checks if they are finished
 def finishedDev():
     while (True):
-        inp = input("Would you like to continue editing your script or are you finished in Dev mode? (quit/cont) ")
+        inp = input("DEV -> Would you like to continue editing your script or are you finished in Dev mode? (quit/cont): ")
         if (inp == "quit"):
             return True
         elif (inp == "cont"):
             return False        
         else:
-            print("That is not a valid answer")
+            print("DEV -> That is not a valid answer")
 
-#Provides information about python 
-#and code used while developing the calculator 
-#Is called right before the area and graph is printed
-#for each shape so should provide information about the code that follows
+
+#Gives the user to develop their own functions through python scripts
+#Provides the user an outline and walks them through the script and lets them play around
+#with the code to make their own calculator functions
 def developerMode():
+    #filename is the name of the written outline which is written in writePy() 
     fileName = writePy()
-    print("This image is what the current code script plots, have fun developing!\n")
+
+    #runs the outline code to show the user what the code originially displays
+    print("DEV -> This image is what the current code script plots, have fun developing!\n")
     sub.call(['python.exe', fileName, '5'])
 
-    command = "start notepad.exe " + fileName
-    print("Please save file before you are finished editing and the code is run")
-    
-    os.system(command) 
-    newFile = input("If you have saved the file under a new name please enter here, otherwise press ENTER: ")
+    #Opens the outline code in the notepad and allows the user to edit the code
+    print("DEV -> Please close and save file when you are finished editing")
+    sub.call(['notepad', fileName])
+
+    # if user saved file under a new name, prompts user for name and saves it 
+    newFile = input("DEV -> If you have saved the file under a new name please enter here, otherwise press ENTER: ")
     if (len(newFile) > 0):
         fileName = newFile
 
-    if (finishedEdit() == 2):
-        return False
     
+    #Loops through the developing process until the user wants to exit developer mode
     while(True):
+
         try:
-            sub.check_call(['python.exe', fileName])
-            if (finishedDev()):
-                break
+            print("DEV -> Your code will now run and check for errors. If it is error free your graph will be displayed!")
+            print("DEV -> If there are any errors in your code, they will be printed below and your plot will not display")
+            sub.check_call(['python.exe', fileName, '5'])
             
+
         except sub.CalledProcessError:
-            print("\nThere was an error in your code, please try again.")
-            inp = input("Would you like to try to fix your code? (Y/N) ")
-            if (inp != "Y"):
+            print("\nDEV -> There was an error in your code, please try again.")
+            #prompts user if they would like to fix their code
+            inp = input("DEV -> Would you like to try to fix your code? (Y/N):  ")
+            #If no then prompts user if they would like to stay in dev mode
+            if (inp == "N" and finishedDev()):
                 break
-        print("Please save file before you are finished editing and the code is run")
-        os.system(command)
-        newFile = input("If you have saved the file under a new name please enter here, otherwise press ENTER: ")
+        
+        #Opens the outline code in the notepad and allows the user to edit the code
+        print("DEV -> Please save file before you are finished editing and the code is run")
+        sub.call(['notepad', fileName])
+
+        #If user saved file under a new name, prompts user for name and saves it 
+        newFile = input("DEV -> If you have saved the file under a new name please enter here, otherwise press ENTER: ")
         if (len(newFile) > 0):
             fileName = newFile
-        if (finishedEdit() == 2):
-            return False
+        
         
     
 parser()
