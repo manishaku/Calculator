@@ -128,7 +128,6 @@ def triangle():
     sub.add_patch(tri)
     plot.ylim(0, h + 5)
     plot.xlim(0, b+ 5)
-    sub.add_artist(tri)
     plot.show()
 
 #Asks for the needed measurements
@@ -149,7 +148,6 @@ def circle():
     sub.add_patch(circle1)
     plot.ylim(0, int(radius)*2)
     plot.xlim(0, int(radius)*2)
-    sub.add_artist(circle1)
     plot.show()
 
 #Asks for the needed measurements
@@ -172,7 +170,6 @@ def rhombus():
     sub.add_patch(tri)
     plot.ylim(0, p + 5)
     plot.xlim(0, q + 5)
-    sub.add_artist(tri)
     plot.show()
     
 #Calls files that were created in developer mode
