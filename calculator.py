@@ -19,6 +19,7 @@ from scipy import math
 import os
 import platform
 import subprocess as sub
+import math
 
 newFileCounter = 0
 fileList = []
@@ -118,7 +119,9 @@ def triangle():
     
     fig = plot.figure()
     area = (1/2)* b * h
-    print("CALC -> Area: " + str(area))
+    perimeter = b + h + math.sqrt(h**2 + b**2)
+    print("CALC -> Area = 1/2 * base * height = %.3f" %area)
+    print("CALC -> Perimeter = base + height + sqrt(base^2 + height^2) = %.3f" %perimeter)
     p1 = (0, h)
     p2 = (0, 0)
     p3 = (b, 0)
@@ -157,7 +160,9 @@ def rhombus():
     p = int(input("CALC -> Please enter the first diagonal length: "))
     q = int(input("CALC -> Please enter the second diagonal length: "))
     area = (p*q) / 2
-    print("CALC -> Area: " + str(area))
+    perimeter = 2 * math.sqrt(p**2 + q**2)
+    print("CALC -> Area = 1/2 * (diagonal 1) * (diagonal 2) = %.3f" %area)
+    print("CALC -> Perimeter = 2 * sqrt((diagonal 1)^2 + (diagonal 2)^2) = %.3f" %perimeter) 
     p1 = (0, p/2)
     p2 = (q/2, p)
     p3 = (q, p/2)
