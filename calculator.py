@@ -75,9 +75,7 @@ def parser():
         elif shape == "triangle":
             triangle()
         elif shape == "circle":
-            print("CALC -> Enter the radius: ")
-            r = int(input('CALC -> '))
-            circle(r)
+            circle()
         elif shape == "rhombus":
             rhombus()
         else:
@@ -134,7 +132,9 @@ def triangle():
 #Print the area
 #Call graph
 #plots the circle based on the radius
-def circle(radius):
+def circle():
+    print("CALC -> Enter the radius: ")
+    radius = int(input('CALC -> '))
     area = math.pi*(int(radius)**2)
     perim = 2 * int(radius) * math.pi
     print("CALC -> Area = pi * radius * radius = %.3f" %area)
