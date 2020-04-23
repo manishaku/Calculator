@@ -169,10 +169,6 @@ def rhombus():
     plot.xlim(0, q + 5)
     sub.add_artist(tri)
     plot.show()
-
-#Calculates the distance between two points
-def pointDist(p1, p2):
-    return ((p2[0]-p1[0])**2) + ((p2[1]-p1[1])**2)**.5
     
 #Calls files that were created in developer mode
 def calcDev(fileName):
