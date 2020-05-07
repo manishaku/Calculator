@@ -9,7 +9,7 @@ Students can enable **developer mode** in the calculator that provides a templat
 If they follow the instruction in the template file they can program a new python function to graph any shape of their choosing.
 
 ### Run:
-    `python3 calculator.py`
+    python3 calculator.py
 
 The calculator script starts, you can choose a particular shape and input the desired value.
     
